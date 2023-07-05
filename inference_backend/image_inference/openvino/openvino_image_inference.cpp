@@ -368,28 +368,27 @@ OpenVINOImageInference::CreateRemoteContext(const InferenceBackend::InferenceCon
     const std::string &device = config.at(KEY_BASE).at(KEY_DEVICE);
 
 #ifdef ENABLE_VPUX
-    std::string vpu_device_name;
-    bool has_vpu_device_id = false;
-    std::tie(has_vpu_device_id, vpu_device_name) = Utils::parseDeviceName(device);
-    if (!vpu_device_name.empty()) {
-        const std::string msg = "VPUX device defined as " + vpu_device_name;
-        GVA_INFO(msg.c_str());
+    // std::string vpu_device_name;
+    // bool has_vpu_device_id = false;
+    // std::tie(has_vpu_device_id, vpu_device_name) = Utils::parseDeviceName(device);
+    // if (!vpu_device_name.empty()) {
+    //     const std::string msg = "VPUX device defined as " + vpu_device_name;
+    //     GVA_INFO(msg.c_str());
 
-        const std::string base_device = "VPUX";
-        std::string device = vpu_device_name;
-        if (!has_vpu_device_id) {
-            // Retrieve ID of the first available device
-            std::vector<std::string> device_list =
-                IeCoreSingleton::Instance().GetMetric(base_device, METRIC_KEY(AVAILABLE_DEVICES)).as<std::vector<std::string>>();
-            if (!device_list.empty())
-                device = device_list.at(0);
-            // else device is already set to VPU-0
-        }
+    //     const std::string base_device = "VPUX";
+    //     std::string device = vpu_device_name;
+    //     if (!has_vpu_device_id) {
+    //         // Retrieve ID of the first available device
+    //         std::vector<std::string> device_list =
+    //             IeCoreSingleton::Instance().GetMetric(base_device, METRIC_KEY(AVAILABLE_DEVICES)).as<std::vector<std::string>>();
+    //         if (!device_list.empty())
+    //             device = device_list.at(0);
+    //         // else device is already set to VPU-0
+    //     }
 
-        const InferenceEngine::ParamMap params = {{InferenceEngine::VPUX_PARAM_KEY(DEVICE_ID), device}};
-        remote_context = IeCoreSingleton::Instance().CreateContext(base_device, params);
-        
-        printf("Device: %s.\n", device);
+    //     const InferenceEngine::ParamMap params = {{InferenceEngine::VPUX_PARAM_KEY(DEVICE_ID), device}};
+    //     remote_context = IeCoreSingleton::Instance().CreateContext(base_device, params);
+        remote_context = nullptr
     }
 #endif
 
