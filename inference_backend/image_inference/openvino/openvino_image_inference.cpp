@@ -283,7 +283,7 @@ OpenVINOImageInference::CreateWrapImageStrategy(MemoryType memory_type, const st
     switch (memory_type) {
     case MemoryType::SYSTEM: {
         if (device.find("VPUX") != device.npos)
-            wrap_strategy.reset(new WrapImageStrategy::VPUX(remote_context));
+            wrap_strategy.reset(new WrapImageStrategy::VPUX());
         else
             wrap_strategy.reset(new WrapImageStrategy::General());
         break;
