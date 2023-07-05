@@ -13,7 +13,7 @@
 #include <inference_backend/image.h>
 
 #ifdef ENABLE_VPUX
-#include <vpux/kmb_params.hpp>
+#include <vpux/vpux_plugin_params.hpp>
 #endif
 
 #ifdef ENABLE_VAAPI

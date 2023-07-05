@@ -17,7 +17,7 @@
 
 #ifdef ENABLE_VPUX
 #include <ie_remote_context.hpp>
-#include <vpux/kmb_params.hpp>
+#include <vpux/vpux_plugin_params.hpp>
 #endif
 
 #ifdef ENABLE_VAAPI

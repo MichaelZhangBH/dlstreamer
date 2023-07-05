@@ -13,7 +13,7 @@
 #include <inference_engine.hpp>
 #include <ngraph/ngraph.hpp>
 
-#include <cldnn/cldnn_config.hpp>
+#include <gpu/gpu_params.hpp>
 
 #include <array>
 #include <fstream>
