@@ -25,7 +25,7 @@
 #include "utils.h"
 #include "video_frame.h"
 
-#include <cldnn/cldnn_config.hpp>
+#include <gpu/gpu_config.hpp>
 
 #include <ie_plugin_config.hpp>
 
