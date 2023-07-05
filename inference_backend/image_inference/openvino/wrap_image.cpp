@@ -39,8 +39,8 @@ InferenceEngine::Blob::Ptr VPUX::MakeSharedBlob(const InferenceBackend::Image &i
     InferenceEngine::Blob::Ptr blob;
 #ifdef ENABLE_VPUX
     InferenceEngine::ParamMap params = {
-        {InferenceEngine::KMB_PARAM_KEY(REMOTE_MEMORY_FD), image.dma_fd},
-        {InferenceEngine::KMB_PARAM_KEY(MEM_HANDLE), reinterpret_cast<void *>(image.planes[plane_num])}};
+        {InferenceEngine::VPUX_PARAM_KEY(REMOTE_MEMORY_FD), image.dma_fd},
+        {InferenceEngine::VPUX_PARAM_KEY(MEM_HANDLE), reinterpret_cast<void *>(image.planes[plane_num])}};
     blob = _remote_context->CreateBlob(tensor_desc, params);
 #else
     UNUSED(image);

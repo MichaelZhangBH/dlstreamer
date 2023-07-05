@@ -262,7 +262,7 @@ InferenceEngine::CNNNetwork CompiledModelLoader::load(const std::string &, const
 }
 
 std::string CompiledModelLoader::name(const NetworkReferenceWrapper &network) {
-    return network.getExecutable().GetMetric(EXEC_NETWORK_METRIC_KEY(NETWORK_NAME));
+    return network.getExecutable().GetMetric(EXEC_NETWORK_METRIC_KEY(NETWORK_NAME)).as<std::string>();
 }
 
 InferenceEngine::ExecutableNetwork
