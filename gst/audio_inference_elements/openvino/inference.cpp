@@ -180,13 +180,13 @@ void OpenVINOAudioInference::CreateRemoteContext(const std::string &device) {
         if (!has_vpu_device_id) {
             // Retrieve ID of the first available device
             std::vector<std::string> device_list =
-                IeCoreSingleton::Instance().GetMetric(base_device, METRIC_KEY(AVAILABLE_DEVICES));
+                IeCoreSingleton::Instance().GetMetric(base_device, METRIC_KEY(AVAILABLE_DEVICES)).as<std::vector<std::string>>();
             if (!device_list.empty())
                 device = device_list.at(0);
             // else device is already set to VPU-0
         }
 
-        const InferenceEngine::ParamMap params = {{InferenceEngine::KMB_PARAM_KEY(DEVICE_ID), device}};
+        const InferenceEngine::ParamMap params = {{InferenceEngine::VPUX_PARAM_KEY(DEVICE_ID), device}};
         remote_context = IeCoreSingleton::Instance().CreateContext(base_device, params);
     }
 }
