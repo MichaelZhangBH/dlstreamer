@@ -119,8 +119,8 @@ void OpenVINOAudioInference::setInputBlob(void *buffer_ptr, int dma_fd) {
 
 #ifdef ENABLE_VPUX
     if (remote_context) {
-        ParamMap params = {{InferenceEngine::KMB_PARAM_KEY(REMOTE_MEMORY_FD), dma_fd},
-                           {InferenceEngine::KMB_PARAM_KEY(MEM_HANDLE), buffer_ptr}};
+        ParamMap params = {{InferenceEngine::VPUX_PARAM_KEY(REMOTE_MEMORY_FD), dma_fd},
+                           {InferenceEngine::VPUX_PARAM_KEY(MEM_HANDLE), buffer_ptr}};
         switch (tensor_desc.getPrecision()) {
         case InferenceEngine::Precision::U8:
         case InferenceEngine::Precision::FP16:
