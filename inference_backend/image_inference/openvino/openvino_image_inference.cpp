@@ -387,9 +387,11 @@ OpenVINOImageInference::CreateRemoteContext(const InferenceBackend::InferenceCon
     //     }
 
     //     const InferenceEngine::ParamMap params = {{InferenceEngine::VPUX_PARAM_KEY(DEVICE_ID), device}};
-    //     remote_context = IeCoreSingleton::Instance().CreateContext(base_device, params);
-        remote_context = nullptr;
-    }
+    //     remote_context = IeCoreSingleton::Instance().CreateContext(base_device, params);  
+    // }
+
+    // remote_context deprected.
+    remote_context = nullptr;
 #endif
 
 #ifdef ENABLE_VAAPI
