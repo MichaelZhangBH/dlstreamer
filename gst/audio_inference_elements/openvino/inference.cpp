@@ -17,7 +17,7 @@
 #include <string>
 
 #ifdef ENABLE_VPUX
-#include <vpux/kmb_params.hpp>
+#include <vpux/vpux_plugin_params.hpp>
 #endif
 
 using namespace InferenceEngine;
