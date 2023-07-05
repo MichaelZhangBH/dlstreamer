@@ -385,9 +385,9 @@ OpenVINOImageInference::CreateRemoteContext(const InferenceBackend::InferenceCon
                 device = device_list.at(0);
             // else device is already set to VPU-0
         }
-        printf("Device: %s.\n", device);
+        // printf("Device: %s.\n", device);
 
-        const InferenceEngine::ParamMap params = {{InferenceEngine::VPUX_PARAM_KEY(DEVICE_ID), device}};
+        const InferenceEngine::ParamMap params = {};
         remote_context = IeCoreSingleton::Instance().CreateContext(base_device, params);
     }
 #endif
