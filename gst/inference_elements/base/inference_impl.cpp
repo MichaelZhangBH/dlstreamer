@@ -436,7 +436,7 @@ InferenceImpl::Model InferenceImpl::CreateModel(GvaBaseInference *gva_base_infer
         // Modify IE config for surface sharing
         if (static_cast<ImagePreprocessorType>(std::stoi(ie_config[KEY_BASE][KEY_PRE_PROCESSOR_TYPE])) ==
             ImagePreprocessorType::VAAPI_SURFACE_SHARING) {
-            ie_config[KEY_INFERENCE][InferenceEngine::CLDNNConfigParams::KEY_CLDNN_NV12_TWO_INPUTS] =
+            ie_config[KEY_INFERENCE][InferenceEngine::GPUConfigParams::KEY_GPU_NV12_TWO_INPUTS] =
                 InferenceEngine::PluginConfigParams::YES;
         }
     }
