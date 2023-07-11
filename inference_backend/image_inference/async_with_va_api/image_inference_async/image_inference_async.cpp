@@ -113,8 +113,10 @@ ImageInferenceAsync::ImageInferenceAsync(const InferenceBackend::InferenceConfig
     GVA_INFO("-- VAAPI_FAST_SCALE_LOAD_FACTOR: %.2f", vdbox_sfc_pipe_part);
     GVA_INFO("-- VAAPI_THREAD_POOL_SIZE: %lu", thread_pool_size);
 
+    printf("========== vadpy_context: %x =========\n", vadpy_context);
     _va_context = std::unique_ptr<VaApiContext>(new VaApiContext(vadpy_context));
     _va_converter = std::unique_ptr<VaApiConverter>(new VaApiConverter(_va_context.get()));
+    printf("========== _va_context & _va_converter =========\n");
 
     auto inference_image_info = get_pool_image_info(_inference);
     size_t image_pool_size = safe_mul(safe_convert<size_t>(inference_image_info.batch), _inference->GetNireq());

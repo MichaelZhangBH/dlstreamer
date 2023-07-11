@@ -52,11 +52,14 @@ using namespace InferenceBackend;
 namespace {
 
 inline std::shared_ptr<Allocator> CreateAllocator(const char *const allocator_name) {
+    printf("<<<<<<<<<<< CreateAllocator >>>>>>>>>>>\n");
     std::shared_ptr<Allocator> allocator;
     if (allocator_name != nullptr) {
-        allocator = std::make_shared<GstAllocatorWrapper>(allocator_name);
+	printf("<<<<<<<<<<< allocator_name : %s >>>>>>>>>>>\n", allocator_name);
+	allocator = std::make_shared<GstAllocatorWrapper>(allocator_name);
         GVA_TRACE("GstAllocatorWrapper is created");
     }
+    printf("<<<<<<<<<<< allocator: %x >>>>>>>>>>>\n", allocator);
     return allocator;
 }
 
@@ -428,7 +431,7 @@ InferenceImpl::Model InferenceImpl::CreateModel(GvaBaseInference *gva_base_infer
     memory_type =
         GetMemoryType(GetMemoryType(static_cast<CapsFeature>(std::stoi(ie_config[KEY_BASE][KEY_CAPS_FEATURE]))),
                       static_cast<ImagePreprocessorType>(std::stoi(ie_config[KEY_BASE][KEY_PRE_PROCESSOR_TYPE])));
-
+    printf("<<<<<<<<<<< memory_type: %d >>>>>>>>>>>\n", memory_type);
     dlstreamer::ContextPtr va_dpy;
     if (memory_type == MemoryType::VAAPI || memory_type == MemoryType::DMA_BUFFER) {
         va_dpy = createVaDisplay(gva_base_inference);
