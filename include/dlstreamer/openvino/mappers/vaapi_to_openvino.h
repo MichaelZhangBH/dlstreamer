@@ -58,7 +58,7 @@ class MemoryMapperVAAPIToOpenVINO : public BaseMemoryMapper {
 
   private:
     std::pair<ov::RemoteTensor, ov::RemoteTensor> convert_to_ov_tensors(VAAPITensor &va_tensor) {
-        printf("========== convert_to_ov_tensors =========\n");
+        GVA_INFO("========== convert_to_ov_tensors =========\n");
 	auto va_surface = va_tensor.va_surface();
         auto &info = va_tensor.info();
         dlstreamer::ImageInfo image_info(info);

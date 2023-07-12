@@ -43,7 +43,7 @@ ImageInference::Ptr ImageInference::make_shared(MemoryType input_image_memory_ty
             throw std::invalid_argument("Null context provided (VaApiContext is expected)");
 
         ImagePreprocessorType preproc_type = getPreProcType(config.at(KEY_BASE));
-        printf("========== preproc_type: %d ==========\n", preproc_type);
+        GVA_INFO("========== preproc_type: %d ==========\n", preproc_type);
 	switch (preproc_type) {
         case ImagePreprocessorType::VAAPI_SYSTEM:
             memory_type_to_use = MemoryType::SYSTEM;
