@@ -25,7 +25,7 @@
 #include "utils.h"
 #include "video_frame.h"
 
-#include <cldnn/cldnn_config.hpp>
+#include <gpu/gpu_config.hpp>
 
 #include <ie_plugin_config.hpp>
 
@@ -52,11 +52,14 @@ using namespace InferenceBackend;
 namespace {
 
 inline std::shared_ptr<Allocator> CreateAllocator(const char *const allocator_name) {
+    printf("<<<<<<<<<<< CreateAllocator >>>>>>>>>>>\n");
     std::shared_ptr<Allocator> allocator;
     if (allocator_name != nullptr) {
-        allocator = std::make_shared<GstAllocatorWrapper>(allocator_name);
+	printf("<<<<<<<<<<< allocator_name : %s >>>>>>>>>>>\n", allocator_name);
+	allocator = std::make_shared<GstAllocatorWrapper>(allocator_name);
         GVA_TRACE("GstAllocatorWrapper is created");
     }
+    printf("<<<<<<<<<<< allocator: %x >>>>>>>>>>>\n", allocator);
     return allocator;
 }
 
@@ -428,7 +431,7 @@ InferenceImpl::Model InferenceImpl::CreateModel(GvaBaseInference *gva_base_infer
     memory_type =
         GetMemoryType(GetMemoryType(static_cast<CapsFeature>(std::stoi(ie_config[KEY_BASE][KEY_CAPS_FEATURE]))),
                       static_cast<ImagePreprocessorType>(std::stoi(ie_config[KEY_BASE][KEY_PRE_PROCESSOR_TYPE])));
-
+    printf("<<<<<<<<<<< memory_type: %d >>>>>>>>>>>\n", memory_type);
     dlstreamer::ContextPtr va_dpy;
     if (memory_type == MemoryType::VAAPI || memory_type == MemoryType::DMA_BUFFER) {
         va_dpy = createVaDisplay(gva_base_inference);
@@ -436,7 +439,7 @@ InferenceImpl::Model InferenceImpl::CreateModel(GvaBaseInference *gva_base_infer
         // Modify IE config for surface sharing
         if (static_cast<ImagePreprocessorType>(std::stoi(ie_config[KEY_BASE][KEY_PRE_PROCESSOR_TYPE])) ==
             ImagePreprocessorType::VAAPI_SURFACE_SHARING) {
-            ie_config[KEY_INFERENCE][InferenceEngine::CLDNNConfigParams::KEY_CLDNN_NV12_TWO_INPUTS] =
+            ie_config[KEY_INFERENCE][InferenceEngine::GPUConfigParams::KEY_GPU_NV12_TWO_INPUTS] =
                 InferenceEngine::PluginConfigParams::YES;
         }
     }

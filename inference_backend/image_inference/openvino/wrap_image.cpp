@@ -13,7 +13,7 @@
 #include <inference_backend/image.h>
 
 #ifdef ENABLE_VPUX
-#include <vpux/kmb_params.hpp>
+#include <vpux/vpux_plugin_params.hpp>
 #endif
 
 #ifdef ENABLE_VAAPI
@@ -38,10 +38,11 @@ InferenceEngine::Blob::Ptr VPUX::MakeSharedBlob(const InferenceBackend::Image &i
                                                 size_t plane_num) const {
     InferenceEngine::Blob::Ptr blob;
 #ifdef ENABLE_VPUX
-    InferenceEngine::ParamMap params = {
-        {InferenceEngine::KMB_PARAM_KEY(REMOTE_MEMORY_FD), image.dma_fd},
-        {InferenceEngine::KMB_PARAM_KEY(MEM_HANDLE), reinterpret_cast<void *>(image.planes[plane_num])}};
-    blob = _remote_context->CreateBlob(tensor_desc, params);
+    // InferenceEngine::ParamMap params = {
+    //     {InferenceEngine::VPUX_PARAM_KEY(REMOTE_MEMORY_FD), image.dma_fd},
+    //     {InferenceEngine::VPUX_PARAM_KEY(MEM_HANDLE), reinterpret_cast<void *>(image.planes[plane_num])}};
+    // blob = _remote_context->CreateBlob(tensor_desc, params);
+    return InferenceEngine::make_shared_blob<uint8_t>(tensor_desc, image.planes[plane_num]);
 #else
     UNUSED(image);
     UNUSED(tensor_desc);

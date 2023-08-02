@@ -35,10 +35,9 @@ class Remote : public General {
     InferenceEngine::RemoteContext::Ptr _remote_context;
 };
 
-class VPUX : public Remote {
+class VPUX : public General {
   public:
-    VPUX(InferenceEngine::RemoteContext::Ptr remote_context) : Remote(remote_context) {
-    }
+    VPUX() = default;
     ~VPUX() = default;
 
     InferenceEngine::Blob::Ptr MakeSharedBlob(const InferenceBackend::Image &image,

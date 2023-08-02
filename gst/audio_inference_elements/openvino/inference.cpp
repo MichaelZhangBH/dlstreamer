@@ -17,7 +17,7 @@
 #include <string>
 
 #ifdef ENABLE_VPUX
-#include <vpux/kmb_params.hpp>
+#include <vpux/vpux_plugin_params.hpp>
 #endif
 
 using namespace InferenceEngine;
@@ -119,8 +119,8 @@ void OpenVINOAudioInference::setInputBlob(void *buffer_ptr, int dma_fd) {
 
 #ifdef ENABLE_VPUX
     if (remote_context) {
-        ParamMap params = {{InferenceEngine::KMB_PARAM_KEY(REMOTE_MEMORY_FD), dma_fd},
-                           {InferenceEngine::KMB_PARAM_KEY(MEM_HANDLE), buffer_ptr}};
+        ParamMap params = {{InferenceEngine::VPUX_PARAM_KEY(REMOTE_MEMORY_FD), dma_fd},
+                           {InferenceEngine::VPUX_PARAM_KEY(MEM_HANDLE), buffer_ptr}};
         switch (tensor_desc.getPrecision()) {
         case InferenceEngine::Precision::U8:
         case InferenceEngine::Precision::FP16:
@@ -180,13 +180,13 @@ void OpenVINOAudioInference::CreateRemoteContext(const std::string &device) {
         if (!has_vpu_device_id) {
             // Retrieve ID of the first available device
             std::vector<std::string> device_list =
-                IeCoreSingleton::Instance().GetMetric(base_device, METRIC_KEY(AVAILABLE_DEVICES));
+                IeCoreSingleton::Instance().GetMetric(base_device, METRIC_KEY(AVAILABLE_DEVICES)).as<std::vector<std::string>>();
             if (!device_list.empty())
                 device = device_list.at(0);
             // else device is already set to VPU-0
         }
 
-        const InferenceEngine::ParamMap params = {{InferenceEngine::KMB_PARAM_KEY(DEVICE_ID), device}};
+        const InferenceEngine::ParamMap params = {{InferenceEngine::VPUX_PARAM_KEY(DEVICE_ID), device}};
         remote_context = IeCoreSingleton::Instance().CreateContext(base_device, params);
     }
 }

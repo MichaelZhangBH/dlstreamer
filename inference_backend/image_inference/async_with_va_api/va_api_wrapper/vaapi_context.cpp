@@ -86,6 +86,7 @@ void VaApiContext::create_config_and_contexts() {
     auto ctx = _display.drvCtx();
     auto vtable = _display.drvVtable();
 
+    GVA_INFO("========== ctx: %x =========\n", ctx);
     VAConfigAttrib format_attrib;
     format_attrib.type = VAConfigAttribRTFormat;
     VA_CALL(vtable.vaGetConfigAttributes(ctx, VAProfileNone, VAEntrypointVideoProc, &format_attrib, 1));
@@ -104,6 +105,7 @@ void VaApiContext::create_config_and_contexts() {
     if (_va_context_id == 0) {
         throw std::invalid_argument("Could not create VA context. Cannot initialize VaApiContext without VA context.");
     }
+    GVA_INFO("========== create_config_and_contexts =========\n");
 }
 
 /**

@@ -17,7 +17,7 @@
 
 #ifdef ENABLE_VPUX
 #include <ie_remote_context.hpp>
-#include <vpux/kmb_params.hpp>
+#include <vpux/vpux_plugin_params.hpp>
 #endif
 
 #ifdef ENABLE_VAAPI
@@ -289,7 +289,7 @@ OpenVINOImageInference::CreateWrapImageStrategy(MemoryType memory_type, const st
     switch (memory_type) {
     case MemoryType::SYSTEM: {
         if (device.find("VPUX") != device.npos)
-            wrap_strategy.reset(new WrapImageStrategy::VPUX(remote_context));
+            wrap_strategy.reset(new WrapImageStrategy::VPUX());
         else
             wrap_strategy.reset(new WrapImageStrategy::General());
         break;
@@ -380,26 +380,33 @@ OpenVINOImageInference::CreateRemoteContext(const InferenceBackend::InferenceCon
     bool has_vpu_device_id = false;
     std::tie(has_vpu_device_id, vpu_device_name) = Utils::parseDeviceName(device);
     if (!vpu_device_name.empty()) {
-        const std::string msg = "VPUX device defined as " + vpu_device_name;
-        GVA_INFO(msg.c_str());
+    	const std::string msg = "VPUX device defined as " + vpu_device_name;
+    	GVA_INFO(msg.c_str());
 
-        const std::string base_device = "VPUX";
-        std::string device = vpu_device_name;
-        if (!has_vpu_device_id) {
-            // Retrieve ID of the first available device
-            std::vector<std::string> device_list =
-                IeCoreSingleton::Instance().GetMetric(base_device, METRIC_KEY(AVAILABLE_DEVICES));
-            if (!device_list.empty())
-                device = device_list.at(0);
-            // else device is already set to VPU-0
-        }
-        const InferenceEngine::ParamMap params = {{InferenceEngine::KMB_PARAM_KEY(DEVICE_ID), device}};
-        remote_context = IeCoreSingleton::Instance().CreateContext(base_device, params);
+    //     const std::string base_device = "VPUX";
+    //     std::string device = vpu_device_name;
+    //     if (!has_vpu_device_id) {
+    //         // Retrieve ID of the first available device
+    //         std::vector<std::string> device_list =
+    //             IeCoreSingleton::Instance().GetMetric(base_device, METRIC_KEY(AVAILABLE_DEVICES)).as<std::vector<std::string>>();
+    //         if (!device_list.empty())
+    //             device = device_list.at(0);
+    //         // else device is already set to VPU-0
+    //     }
+
+    //     const InferenceEngine::ParamMap params = {{InferenceEngine::VPUX_PARAM_KEY(DEVICE_ID), device}};
+    //     remote_context = IeCoreSingleton::Instance().CreateContext(base_device, params);  
+    
+    	// remote_context deprected.
+   	printf("---------- VPUX RemoteContext -----------\n");
+	remote_context = nullptr;
     }
+
 #endif
 
 #ifdef ENABLE_VAAPI
     const bool is_gpu_device = device.rfind("GPU", 0) == 0;
+    printf("---------- is_gpu_device: %d -----------\n", is_gpu_device);
     // There are 3 possible scenarios:
     // 1. memory_type == VAAPI: we are going to use the surface sharing mode and we have to provide
     // VADisplay to GPU plugin so it can work with VaSurfaces that we are going to submit via BLOBs.
@@ -413,9 +420,12 @@ OpenVINOImageInference::CreateRemoteContext(const InferenceBackend::InferenceCon
     // In case 2.2 user may choose desired GPU for inference. Currently matching GPU ID to actual
     // hardware is not possible due to OpenVINO™ API lacking.
     if (is_gpu_device && (memory_type == MemoryType::VAAPI || memory_type == MemoryType::SYSTEM)) {
-        if (context_) {
-            using namespace InferenceEngine;
-
+        printf("--------- context_: %x ---------\n", context_);
+	printf("--------- context_ is nullptr: %d ---------\n", context_ == nullptr);
+	if (context_) {
+            printf("-------- debug GPU 0 ---------\n");
+	    using namespace InferenceEngine;
+	    printf("-------- debug GPU 1 ---------\n");
             // TODO: Bug in OpenVINO™ 2021.4.X. Caused by using GPU_THROUGHPUT_STREAMS=GPU_THROUGHPUT_AUTO.
             // During CreateContext() call, IE creates queues for each of GPU_THROUGHPUT_STREAMS. By
             // default GPU_THROUGHPUT_STREAMS is set to 1, so IE creates only 1 queue. Then, during
@@ -452,8 +462,9 @@ OpenVINOImageInference::CreateRemoteContext(const InferenceBackend::InferenceCon
                             "higher is required");
 #endif
             }
-
+	    printf("---------- Before GPU remote_context -----------\n");
             remote_context = IeCoreSingleton::Instance().CreateContext("GPU", contextParams);
+	    printf("---------- After GPU remote_context -----------\n");
         } else if (memory_type == MemoryType::VAAPI) {
             throw std::runtime_error("Display must be provided for GPU device with vaapi-surface-sharing backend");
         }

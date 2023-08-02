@@ -43,7 +43,8 @@ ImageInference::Ptr ImageInference::make_shared(MemoryType input_image_memory_ty
             throw std::invalid_argument("Null context provided (VaApiContext is expected)");
 
         ImagePreprocessorType preproc_type = getPreProcType(config.at(KEY_BASE));
-        switch (preproc_type) {
+        GVA_INFO("========== preproc_type: %d ==========\n", preproc_type);
+	switch (preproc_type) {
         case ImagePreprocessorType::VAAPI_SYSTEM:
             memory_type_to_use = MemoryType::SYSTEM;
             // For OV instance VADisplay is not needed in this case.
@@ -63,6 +64,7 @@ ImageInference::Ptr ImageInference::make_shared(MemoryType input_image_memory_ty
 
     auto ov_inference = std::make_shared<OpenVINOImageInference>(config, allocator, context, callback, error_handler,
                                                                  memory_type_to_use);
+    printf("---------- OVImageInference Created -----------\n");
 
     ImageInference::Ptr result_inference;
     if (async_mode) {

@@ -33,9 +33,10 @@ string build_string(Args... args) {
 
 shared_ptr<GstAllocator> create_gst_allocator(const std::string &name) {
     const char *allocator_name = nullptr;
+    printf("<<<<<<<<<<< create_gst_allocator name: %s >>>>>>>>>>>\n", name);
     if (!name.empty() && name != "default") {
         allocator_name = name.c_str();
-        GVA_TRACE("The '%s' will be used as allocator name", allocator_name);
+        GVA_WARNING("The '%s' will be used as allocator name", allocator_name);
     } else {
         GVA_WARNING("Allocator name is empty. Default gstreamer allocator will be used");
     }
@@ -87,6 +88,7 @@ struct Memory {
 };
 
 GstAllocatorWrapper::GstAllocatorWrapper(const std::string &name) : name(name) {
+    printf("<<<<<<<<<<< GstAllocatorWrapper name: %s >>>>>>>>>>>\n", name);
     if (name.empty()) {
         throw std::runtime_error("Cannot initialize wrapper: allocator's name is empty");
     }
