@@ -20,7 +20,7 @@
 
 #include "config.h"
 #include "safe_queue.h"
-
+#include "performance_counter/performance_counter.h"
 struct EntityBuilder;
 namespace WrapImageStrategy {
 struct General;
@@ -93,6 +93,8 @@ class OpenVINOImageInference : public InferenceBackend::ImageInference {
     std::condition_variable request_processed_;
     std::mutex flush_mutex;
 
+    //pc
+    std::unique_ptr<PerformanceCounter> _perf_ctr;
   private:
     void FreeRequest(std::shared_ptr<BatchRequest> request);
     InferenceEngine::RemoteContext::Ptr CreateRemoteContext(const InferenceBackend::InferenceConfig &config);

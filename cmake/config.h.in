@@ -10,5 +10,5 @@
 #cmakedefine ENABLE_VAAPI
 #cmakedefine ENABLE_VPUX
 #cmakedefine ENABLE_ITT
-
+#cmakedefine ENABLE_PERF_CAL
 #endif

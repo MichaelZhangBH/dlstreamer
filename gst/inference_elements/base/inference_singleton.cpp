@@ -116,7 +116,7 @@ std::string capsFeatureString(CapsFeature newCapsFeature) {
     case SYSTEM_MEMORY_CAPS_FEATURE:
         return "System";
     case VA_SURFACE_CAPS_FEATURE:
-        return "VASurface";
+        return "VAMemory";
     case DMA_BUF_CAPS_FEATURE:
         return "DMABuf";
     }

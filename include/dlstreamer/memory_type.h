@@ -53,7 +53,7 @@ inline const char *memory_type_to_string(MemoryType type) {
     case MemoryType::FFmpeg:
         return "FFmpeg";
     case MemoryType::VAAPI:
-        return "VASurface";
+        return "VAMemory";
     case MemoryType::DMA:
         return "DMABuf";
     case MemoryType::USM:
@@ -81,7 +81,7 @@ static inline MemoryType memory_type_from_string(std::string str) {
         return MemoryType::CPU;
     if (str == "GStreamer")
         return MemoryType::GST;
-    if (str == "VASurface")
+    if (str == "VAMemory")
         return MemoryType::VAAPI;
     if (str == "DMABuf")
         return MemoryType::DMA;

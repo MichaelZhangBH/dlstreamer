@@ -245,7 +245,13 @@ void OpenVINOImageInference::SetCompletionCallback(std::shared_ptr<BatchRequest>
     auto completion_callback = [this, batch_request](InferenceEngine::InferRequest, InferenceEngine::StatusCode code) {
         try {
             ITT_TASK("completion_callback_lambda");
-
+#ifdef ENABLE_PERF_CAL
+            size_t buffer_size = batch_request->buffers.size();
+            GVA_FIXME("model_name: %s, inference size: %ld", const_cast<char*>(model_name.c_str()), buffer_size);
+            if(_perf_ctr.get()){
+                _perf_ctr->NewInference(buffer_size);
+            }
+#endif
             if (code != InferenceEngine::StatusCode::OK) {
                 GVA_ERROR("Inference request failed with code: %d (%s)", code, getErrorMsg(code).c_str());
                 this->handleError(batch_request->buffers);
@@ -348,7 +354,9 @@ OpenVINOImageInference::OpenVINOImageInference(const InferenceBackend::Inference
             freeRequests.push(batch_request);
         }
         wrap_strategy = CreateWrapImageStrategy(memory_type, base_config.at(KEY_DEVICE), remote_context);
-
+#ifdef ENABLE_PERF_CAL        
+        _perf_ctr = std::make_unique<PerformanceCounter>(model_name);
+#endif
     } catch (const std::exception &e) {
         std::throw_with_nested(std::runtime_error("Failed to construct OpenVINOImageInference"));
     }

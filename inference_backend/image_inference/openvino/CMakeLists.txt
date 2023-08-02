@@ -11,14 +11,16 @@ set (TARGET_NAME "image_inference_openvino")
 find_IE_package()
 find_package(ngraph REQUIRED)
 find_package(PkgConfig REQUIRED)
-
+find_library(MQTT paho-mqtt3a REQUIRED)
+find_library(UUID uuid REQUIRED)
 file (GLOB MAIN_SRC
         ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/*.c
+        ${CMAKE_CURRENT_SOURCE_DIR}/performance_counter/*.cpp
         )
 
 file (GLOB MAIN_HEADERS
         ${CMAKE_CURRENT_SOURCE_DIR}/*.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/performance_counter/*.h
         )
 add_library(${TARGET_NAME} STATIC ${MAIN_SRC} ${MAIN_HEADERS})
 set_compile_flags(${TARGET_NAME})
@@ -39,6 +41,8 @@ PUBLIC
         ${InferenceEngine_LIBRARIES}
         utils
         logger
+        ${MQTT}
+        ${UUID}
 PRIVATE
         ngraph::ngraph
 )

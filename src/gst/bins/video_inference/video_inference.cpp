@@ -27,7 +27,7 @@ GST_DEBUG_CATEGORY_STATIC(video_inference_debug_category);
 G_DEFINE_TYPE(VideoInference, video_inference, GST_TYPE_PROCESSBIN);
 // G_DEFINE_TYPE_WITH_PRIVATE(VideoInference, video_inference, GST_TYPE_BIN)
 
-#define GST_VAAPI_DISPLAY_CONTEXT_TYPE_NAME "gst.vaapi.Display"
+#define GST_VAAPI_DISPLAY_CONTEXT_TYPE_NAME "gst.va.display.handle"
 
 /* Properties */
 enum {

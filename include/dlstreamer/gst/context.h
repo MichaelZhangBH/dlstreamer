@@ -63,8 +63,8 @@ class GSTContextQuery : public BaseContext {
     const GstStructure *_structure = nullptr;
 
     // TODO different naming in gst-vaapi and gst-va plugins
-    static constexpr auto VAAPI_CONTEXT_NAME = "gst.vaapi.Display";
-    static constexpr auto VAAPI_DISPLAY_FIELD_NAME = "gst.vaapi.Display.GObject";
+    static constexpr auto VAAPI_CONTEXT_NAME = "gst.va.display.handle";
+    static constexpr auto VAAPI_DISPLAY_FIELD_NAME = "gst-display";
     static constexpr auto VAAPI_DISPLAY_PROPERTY_NAME = "va-display";
 
     const char *get_context_name(MemoryType memory_type) {

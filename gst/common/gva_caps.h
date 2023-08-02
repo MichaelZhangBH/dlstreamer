@@ -12,8 +12,7 @@
 #include <gst/video/video.h>
 
 #define DMABUF_FEATURE_STR "memory:DMABuf"
-#define VASURFACE_FEATURE_STR "memory:VASurface"
-
+#define VASURFACE_FEATURE_STR "memory:VAMemory"
 #define SYSTEM_MEM_CAPS GST_VIDEO_CAPS_MAKE("{ BGRx, BGRA, BGR, NV12, I420 }") "; "
 
 #ifdef ENABLE_VAAPI

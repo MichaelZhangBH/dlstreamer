@@ -116,7 +116,7 @@ static void gst_gva_watermark_init(GstGvaWatermark *self) {
     gst_bin_add_many(GST_BIN(self), GST_ELEMENT(gst_object_ref(self->identity)),
                      GST_ELEMENT(gst_object_ref(self->watermarkimpl)), nullptr);
 
-    auto factory = gst_element_factory_find("vaapipostproc");
+    auto factory = gst_element_factory_find("vapostproc");
     auto sg_factory = makeScopeGuard([factory]() {
         if (factory)
             gst_object_unref(factory);
@@ -289,9 +289,9 @@ static gboolean unlink_videoconvert(GstGvaWatermark *self) {
 // VA-API path:
 // |ghost sink| -> <identity> -> <vaapipostproc> -> <capsfilter> -> <watermarkimpl> -> <vaapipostproc> -> |ghost src|
 static gboolean gva_watermark_link_vaapi_path(GstGvaWatermark *self, CapsFeature in_mem_type) {
-    self->preproc = gst_element_factory_make("vaapipostproc", nullptr);
+    self->preproc = gst_element_factory_make("vapostproc", nullptr);
     self->capsfilter = gst_element_factory_make("capsfilter", nullptr);
-    self->postproc = gst_element_factory_make("vaapipostproc", nullptr);
+    self->postproc = gst_element_factory_make("vapostproc", nullptr);
 
     if (!self->preproc || !self->postproc || !self->capsfilter) {
         GST_ELEMENT_ERROR(self, CORE, MISSING_PLUGIN, ("GStreamer installation is missing plugins of VA-API path"),
@@ -364,7 +364,7 @@ static void gva_watermark_unlink_vaapi_path(GstGvaWatermark *self) {
 // |ghost sink| -> <identity> -> <watermarkimpl> -> |ghost src|
 static gboolean gva_watermark_link_direct_path(GstGvaWatermark *self, bool use_postproc = false) {
     if (use_postproc) {
-        self->postproc = gst_element_factory_make("vaapipostproc", nullptr);
+        self->postproc = gst_element_factory_make("vapostproc", nullptr);
         if (!self->postproc) {
             GST_ERROR_OBJECT(self, "Could not create vaapipostproc instance");
         }
